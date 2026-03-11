@@ -89,6 +89,7 @@ Kickstart Guide:
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.opt.swapfile = false
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
@@ -183,7 +184,6 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
-
 -- Allow backspace delete no vim style
 -- vim.keymap.set("i", "<C-h>", "<C-w>", { noremap = true })
 vim.keymap.set("i", "<C-h>", "<C-w>", { noremap = true })
@@ -198,10 +198,10 @@ vim.keymap.set("i", "<C-h>", "<C-w>", { noremap = true })
 --  Use CTRL+<hjkl> to switch between windows
 --
 -- --  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- Keybinds close and save files
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -394,8 +394,7 @@ if ok then
 		}, { key = ft })
 	end
 
-
-	-- disable expand for now i rather have the move between windows for now 
+	-- disable expand for now i rather have the move between windows for now
 	-- Keymaps to expand / jump with <C-k> and go back with <C-j>
 	-- vim.keymap.set({ "i", "s" }, "<C-k>", function()
 	-- 	if ls.expand_or_jumpable() then
@@ -533,3 +532,29 @@ end
 
 vim.keymap.set("n", "<leader>tt", Insert, { desc = "Add todo" })
 vim.keymap.set("n", "<leader>td", Toggle, { desc = "Toggle todo" })
+
+--- dap setting debugger
+
+local dap = require("dap")
+
+
+-- Reutilizar la misma config para JavaScript
+dap.configurations.javascript = dap.configurations.typescript
+-- Reutilizar para JS
+dap.configurations.javascript = dap.configurations.typescript
+
+vim.keymap.set("n", "<F5>", function()
+	dap.continue()
+end)
+vim.keymap.set("n", "<F10>", function()
+	dap.step_over()
+end)
+vim.keymap.set("n", "<F11>", function()
+	dap.step_into()
+end)
+vim.keymap.set("n", "<F12>", function()
+	dap.step_out()
+end)
+vim.keymap.set("n", "<Leader>b", function()
+	dap.toggle_breakpoint()
+end)
